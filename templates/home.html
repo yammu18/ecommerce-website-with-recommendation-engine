@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}ShopSmart - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 bg-light rounded">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">Welcome to ShopSmart</h1>
+                <p class="lead">Discover products tailored just for you with our smart recommendation engine.</p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{{ url_for('product.index') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                    </a>
+                    {% if not g.user %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-user-plus me-2"></i> Sign Up
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Personalized Recommendations Section -->
+{% if g.user and recommended_products %}
+<section class="my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title">Recommended For You</h2>
+        <a href="{{ url_for('product.index') }}" class="btn btn-outline-primary">View All</a>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for product in recommended_products %}
+        <div class="col">
+            <div class="card h-100 product-card">
+                {% if product.images and product.images|length > 0 %}
+                <img src="{{ product.images[0] }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/product-placeholder.jpg') }}" class="card-img-top" alt="{{ product.name }}">
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-truncate">{{ product.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-primary">{{ product.price|currency }}</span>
+                        <div class="btn-group">
+                            <a href="{{ url_for('product.detail', product_id=product._id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                            <form action="{{ url_for('cart.add', product_id=product._id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Products Section -->
+<section class="my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title">Featured Products</h2>
+        <a href="{{ url_for('product.index') }}" class="btn btn-outline-primary">View All</a>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for product in featured_products %}
+        <div class="col">
+            <div class="card h-100 product-card">
+                {% if product.images and product.images|length > 0 %}
+                <img src="{{ product.images[0] }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/product-placeholder.jpg') }}" class="card-img-top" alt="{{ product.name }}">
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-truncate">{{ product.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-primary">{{ product.price|currency }}</span>
+                        <div class="btn-group">
+                            <a href="{{ url_for('product.detail', product_id=product._id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                            <form action="{{ url_for('cart.add', product_id=product._id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Privacy Banner (NEW) -->
+<section class="my-5">
+    <div class="card bg-light border-primary">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-1 text-center">
+                    <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                </div>
+                <div class="col-md-8">
+                    <h5 class="card-title">Your Privacy Matters</h5>
+                    <p class="card-text mb-md-0">
+                        Our recommendations are enhanced with differential privacy to protect your data while providing personalized suggestions.
+                        Learn how we protect your privacy and control your recommendation settings.
+                    </p>
+                </div>
+                <div class="col-md-3 text-md-end mt-3 mt-md-0">
+                    <a href="{{ url_for('privacy_recommendations_page') }}" class="btn btn-primary">
+                        <i class="fas fa-shield-alt me-2"></i>Privacy Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="my-5">
+    <h2 class="section-title mb-4">Shop by Category</h2>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for category in get_product_categories() %}
+        <div class="col">
+            <a href="{{ url_for('product.category', category=category) }}" class="text-decoration-none">
+                <div class="card h-100 category-card bg-light text-center">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-title text-primary">{{ category|title }}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="my-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+        <div class="col">
+            <div class="p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white mb-3">
+                    <i class="fas fa-truck fa-2x"></i>
+                </div>
+                <h3>Free Shipping</h3>
+                <p>On orders over $50. Get your products delivered fast and reliably.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white mb-3">
+                    <i class="fas fa-undo fa-2x"></i>
+                </div>
+                <h3>Easy Returns</h3>
+                <p>30-day hassle-free returns. Customer satisfaction guaranteed.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white mb-3">
+                    <i class="fas fa-headset fa-2x"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Our customer service team is ready to help you anytime.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .feature-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .section-title {
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .section-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 3px;
+        background-color: var(--bs-primary);
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .category-card {
+        height: 150px;
+        transition: all 0.3s ease;
+    }
+    
+    .category-card:hover {
+        background-color: var(--bs-primary) !important;
+    }
+    
+    .category-card:hover .card-title {
+        color: white !important;
+    }
+</style>
+{% endblock %}

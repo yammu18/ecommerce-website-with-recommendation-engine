@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('cart.index') }}">Shopping Cart</a></li>
+        <li class="breadcrumb-item active">Checkout</li>
+    </ol>
+</nav>
+
+<h1 class="mb-4">Checkout</h1>
+
+<div class="row">
+    <!-- Checkout Form -->
+    <div class="col-lg-8">
+        <form action="{{ url_for('cart.checkout') }}" method="POST" id="checkout-form">
+            <!-- Customer Information -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user me-2"></i> Customer Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="full_name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ g.user.full_name if g.user.full_name else g.user.username }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ g.user.email }}" required readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ g.user.phone }}" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shipping Address -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-shipping-fast me-2"></i> Shipping Address
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="address_line1" class="form-label">Address Line 1 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="address_line1" name="address_line1" value="{{ g.user.address.street if g.user.address else '' }}" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="address_line2" class="form-label">Address Line 2</label>
+                            <input type="text" class="form-control" id="address_line2" name="address_line2">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{ g.user.address.city if g.user.address else '' }}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">State/Province <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="state" name="state" value="{{ g.user.address.state if g.user.address else '' }}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="postal_code" class="form-label">Postal Code <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="postal_code" name="postal_code" value="{{ g.user.address.postal_code if g.user.address else '' }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
+                            <select class="form-select" id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="US" {% if g.user.address and g.user.address.country == 'US' %}selected{% endif %}>United States</option>
+                                <option value="CA" {% if g.user.address and g.user.address.country == 'CA' %}selected{% endif %}>Canada</option>
+                                <option value="UK" {% if g.user.address and g.user.address.country == 'UK' %}selected{% endif %}>United Kingdom</option>
+                                <option value="AU" {% if g.user.address and g.user.address.country == 'AU' %}selected{% endif %}>Australia</option>
+                                <!-- Add more countries as needed -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Information -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-credit-card me-2"></i> Payment Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> This is a mock checkout. No real payment will be processed.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Payment Method <span class="text-danger">*</span></label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="payment_method" id="payment_credit_card" value="credit_card" checked>
+                            <label class="form-check-label" for="payment_credit_card">
+                                <i class="far fa-credit-card me-2"></i> Credit Card
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="payment_method" id="payment_paypal" value="paypal">
+                            <label class="form-check-label" for="payment_paypal">
+                                <i class="fab fa-paypal me-2"></i> PayPal
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash_on_delivery" value="cash_on_delivery">
+                            <label class="form-check-label" for="payment_cash_on_delivery">
+                                <i class="fas fa-money-bill-wave me-2"></i> Cash on Delivery
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="credit-card-details">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="card_number" class="form-label">Card Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="card_number" placeholder="4111 1111 1111 1111" value="4111 1111 1111 1111" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="expiry_date" class="form-label">Expiry Date <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="expiry_date" placeholder="MM/YY" value="12/25" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cvv" class="form-label">CVV <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="cvv" placeholder="123" value="123" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Notes -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-clipboard me-2"></i> Order Notes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <textarea class="form-control" id="order_notes" name="order_notes" rows="3" placeholder="Special instructions for delivery"></textarea>
+                </div>
+            </div>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-lg btn-primary">
+                    <i class="fas fa-check me-2"></i> Place Order
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-receipt me-2"></i> Order Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tbody>
+                            {% for item in cart_items %}
+<tr>
+    <td class="w-75">
+        <div class="d-flex align-items-center">
+            <div class="me-2">
+                {% if item.images and item.images|length > 0 %}
+                <img src="{{ url_for('static', filename=item.images[0]) }}" class="img-thumbnail cart-thumbnail" alt="{{ item.name }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/product-placeholder.jpg') }}" class="img-thumbnail cart-thumbnail" alt="{{ item.name }}">
+                {% endif %}
+            </div>
+            <div>
+                <h6 class="mb-0">{{ item.name }}</h6>
+                <small class="text-muted">Qty: {{ item.quantity }}</small>
+            </div>
+        </div>
+    </td>
+    <td class="text-end">{{ item.subtotal|currency }}</td>
+</tr>
+{% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>{{ cart.total|currency }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Shipping:</span>
+                    <span>{{ "Free" if cart.total >= 50 else "$5.00" }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tax (8%):</span>
+                    <span>{{ (cart.total * 0.08)|currency }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-3 fw-bold">
+                    <span>Total:</span>
+                    <span class="text-primary">{{ ((cart.total * 1.08) + (0 if cart.total >= 50 else 5))|currency }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Secure Checkout -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="mb-3"><i class="fas fa-shield-alt me-2"></i> Secure Checkout</h5>
+                <p class="small mb-2">We use industry-standard encryption to protect your personal information.</p>
+                <div class="d-flex justify-content-around mb-2">
+                    <i class="fab fa-cc-visa fa-2x text-primary"></i>
+                    <i class="fab fa-cc-mastercard fa-2x text-primary"></i>
+                    <i class="fab fa-cc-amex fa-2x text-primary"></i>
+                    <i class="fab fa-cc-paypal fa-2x text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .cart-thumbnail {
+        max-width: 50px;
+        max-height: 50px;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+        const creditCardDetails = document.getElementById('credit-card-details');
+        
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                if (this.value === 'credit_card') {
+                    creditCardDetails.style.display = 'block';
+                } else {
+                    creditCardDetails.style.display = 'none';
+                }
+            });
+        });
+        
+        // Form validation
+        const checkoutForm = document.getElementById('checkout-form');
+        checkoutForm.addEventListener('submit', function(event) {
+            let valid = true;
+            const requiredFields = this.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!valid) {
+                event.preventDefault();
+                alert('Please fill out all required fields.');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+</script>
+{% endblock %}

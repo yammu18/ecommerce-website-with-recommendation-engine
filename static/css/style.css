@@ -1,0 +1,319 @@
+/**
+ * Custom CSS for E-Commerce Application
+ */
+
+/* General Styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0a58ca;
+}
+
+/* Navbar Styles */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+
+/* Product Cards */
+.product-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-card .card-text {
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+/* Category Cards */
+.category-card {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    transition: all 0.3s ease;
+    height: 150px;
+}
+
+.category-card:hover {
+    background-color: #0d6efd !important;
+}
+
+.category-card:hover .card-title {
+    color: white !important;
+}
+
+/* Section Titles */
+.section-title {
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #0d6efd;
+}
+
+/* Feature Icons */
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+/* Product Detail Page */
+.product-image {
+    max-height: 400px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+}
+
+.thumbnail-nav {
+    cursor: pointer;
+    height: 60px;
+    object-fit: cover;
+}
+
+.thumbnail-nav:hover {
+    border-color: #0d6efd;
+}
+
+/* Cart Page */
+.cart-thumbnail {
+    max-width: 60px;
+    max-height: 60px;
+    object-fit: cover;
+}
+
+.quantity-control {
+    max-width: 120px;
+    margin: 0 auto;
+}
+
+.quantity-input {
+    text-align: center;
+}
+
+/* Profile Page */
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.profile-pic-placeholder {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    color: #6c757d;
+}
+
+.stat-item {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.activity-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+/* Order Status Badges */
+.badge.bg-pending {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge.bg-processing {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.badge.bg-shipped {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.badge.bg-delivered {
+    background-color: #198754;
+    color: #fff;
+}
+
+.badge.bg-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Checkout Page */
+.checkout-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.checkout-step {
+    text-align: center;
+    flex: 1;
+    padding: 1rem;
+    position: relative;
+}
+
+.checkout-step::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -50%;
+    height: 2px;
+    width: 100%;
+    background-color: #dee2e6;
+    z-index: -1;
+}
+
+.checkout-step:last-child::after {
+    display: none;
+}
+
+.checkout-step-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    color: #6c757d;
+    z-index: 1;
+    position: relative;
+}
+
+.checkout-step.active .checkout-step-icon,
+.checkout-step.completed .checkout-step-icon {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.checkout-step.completed::after {
+    background-color: #0d6efd;
+}
+
+.checkout-step-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.checkout-step.active .checkout-step-label,
+.checkout-step.completed .checkout-step-label {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+/* Placeholder Image */
+.placeholder-img {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 3rem 0;
+    margin-top: 3rem;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #f8f9fa;
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .product-card .card-img-top {
+        height: 180px;
+    }
+    
+    .checkout-step-label {
+        font-size: 0.75rem;
+    }
+    
+    .checkout-step-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .checkout-step-label {
+        display: none;
+    }
+    
+    .checkout-steps {
+        margin-bottom: 1rem;
+    }
+}
